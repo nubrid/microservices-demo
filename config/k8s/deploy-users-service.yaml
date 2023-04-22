@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-service-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-service
+  template:
+    metadata:
+      labels:
+        app: users-service
+    spec:
+      containers:
+        - name: users-service
+          image: nubrid/demo-microservices-1-users-service:0.0.1 # Removing tag `0.0.1` will pull from docker hub
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service-clusterip
+spec:
+  type: ClusterIP # default; can be removed
+  selector:
+    app: users-service
+  ports:
+    - name: users-service
+      protocol: TCP
+      port: 5000
+      targetPort: 5000

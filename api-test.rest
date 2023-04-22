@@ -1,0 +1,23 @@
+http://localhost/api/users
+
+###
+
+POST http://localhost/api/users
+Content-Type: application/json
+
+{
+    "name": "Test User I"
+}
+
+###
+
+http://localhost/api/users/f28a15b9a84aee66/posts
+
+###
+
+POST http://localhost/api/users/f28a15b9a84aee66/posts
+Content-Type: application/json
+
+{
+    "post": "Test User I post"
+}

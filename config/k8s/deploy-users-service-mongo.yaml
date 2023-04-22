@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-service-mongo-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-service-mongo
+  template:
+    metadata:
+      labels:
+        app: users-service-mongo
+    spec:
+      containers:
+        - name: users-service-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service-mongo
+spec:
+  selector:
+    app: users-service-mongo
+  ports:
+    - name: database
+      protocol: TCP
+      port: 27017 # NOTE: https://hub.docker.com/_/mongo
+      targetPort: 27017

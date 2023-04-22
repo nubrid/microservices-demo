@@ -1,0 +1,28 @@
+# NOTE: https://stackoverflow.com/questions/49219171/expose-service-on-local-kubernetes
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    # NOTE: https://kubernetes.github.io/ingress-nginx/user-guide/ingress-path-matching/
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+  - host: localhost # e.g. dev.randellr.com
+    http:
+      paths:
+      - path: /api/users
+        pathType: Exact
+        backend:
+          service:
+            name: users-service-clusterip
+            port:
+              number: 5000
+      - path: /api/users/.*
+        pathType: Prefix
+        backend:
+          service:
+            name: posts-service-clusterip
+            port:
+              number: 5100

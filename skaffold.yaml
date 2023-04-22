@@ -1,0 +1,37 @@
+# NOTE: https://skaffold.dev/docs/references/yaml/#
+# NOTE: https://stackoverflow.com/questions/74258716/in-skaffold-v2alpha3-i-am-getting-error-of-property-manifests-is-not-allowed
+apiVersion: skaffold/v4beta4
+kind: Config
+deploy:
+  kubectl: {}
+manifests:
+  rawYaml:
+    - ./config/k8s/*
+build:
+  local:
+    push: false # Don't push to docker hub
+  artifacts:
+    - image: nubrid/demo-microservices-1-frontend
+      context: frontend # Directory
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.{ts,tsx}'
+            dest: .
+    - image: nubrid/demo-microservices-1-users-service
+      context: users-service # Directory
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'index.js'
+            dest: .
+    - image: nubrid/demo-microservices-1-posts-service
+      context: posts-service # Directory
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'index.js'
+            dest: .
